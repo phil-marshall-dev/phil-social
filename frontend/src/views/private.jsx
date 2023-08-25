@@ -1,21 +1,25 @@
 import { useEffect, useState } from 'react';
 import useAxios from '../utils/useAxios';
+import { useAuthStore } from '../store/auth';
 
 const Private = () => {
-    const [res, setRes] = useState('');
+    const username = useAuthStore((state) => state.user().username);
     const [posRes, setPostRes] = useState('');
+    const [posts, setPosts] = useState('');
+    console.log(posts)
     const api = useAxios();
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await api.get('/test/');
-                setRes(response.data.response);
+                const response = await api.get('/posts/');
+                setPosts(response.data);
             } catch (error) {
-                setPostRes(error.response.data);
+                setPosts(error.response.data);
             }
         };
         fetchData();
-    }, []);
+    }, [])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -29,12 +33,12 @@ const Private = () => {
     };
     return (
         <section>
-            <h1>Private</h1>
-            <p>{res}</p>
+            <h2>What's on your mind, {username}?</h2>
             <form method="POST" onSubmit={handleSubmit}>
-                <input type="text" placeholder="Enter Text" />
+                <input type="text" size="50" placeholder="Enter Text" />
                 <button type="submit">Submit</button>
             </form>
+            <h2>Most recent posts from our users</h2>
             {posRes && <p>{posRes}</p>}
         </section>
     );

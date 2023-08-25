@@ -1,0 +1,3 @@
+scp -i philSocialKeyPair.pem \
+      -r $(pwd)/{backend,nginx,.env.staging,.env.staging.proxy-companion,docker-compose.staging.yml} \
+      ubuntu@13.58.206.250:/home/ubuntu

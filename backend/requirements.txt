@@ -11,3 +11,5 @@ sqlparse==0.4.3
 toml==0.10.2
 tomli==2.0.1
 tzdata==2023.3
+psycopg2-binary==2.9.6
+gunicorn==21.2.0

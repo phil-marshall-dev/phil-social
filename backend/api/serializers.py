@@ -4,7 +4,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
+from .models import Post
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -44,3 +44,22 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+
+class PostSerializer(serializers.ModelSerializer):
+    owner = serializers.SlugRelatedField(
+        many=False,
+        read_only=True,
+        slug_field='username'
+    )
+    class Meta:
+        model = Post
+        fields = ['content', 'owner', 'created_at']
+
+class UserSerializer(serializers.ModelSerializer):
+    post_set = PostSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = User
+        fields = ['username', 'post_set']

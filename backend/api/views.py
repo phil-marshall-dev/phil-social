@@ -3,14 +3,14 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
-from api.serializer import MyTokenObtainPairSerializer, RegisterSerializer
+from api.serializers import MyTokenObtainPairSerializer, RegisterSerializer, PostSerializer, UserSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 import json
-
+from .models import Post
 # Create your views here.
 
 
@@ -30,7 +30,8 @@ def getRoutes(request):
         '/api/token/',
         '/api/register/',
         '/api/token/refresh/',
-        '/api/test/'
+        '/api/test/',
+        '/api/posts/'
     ]
     return Response(routes)
 
@@ -53,3 +54,21 @@ def testEndPoint(request):
         except json.JSONDecodeError:
             return Response("Invalid JSON data", status.HTTP_400_BAD_REQUEST)
     return Response("Invalid JSON data", status.HTTP_400_BAD_REQUEST)
+
+
+class PostList(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
