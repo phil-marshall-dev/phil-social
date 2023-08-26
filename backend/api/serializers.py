@@ -48,18 +48,15 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    owner = serializers.SlugRelatedField(
-        many=False,
-        read_only=True,
-        slug_field='username'
-    )
+    owner = serializers.ReadOnlyField(source='owner.username')
+
     class Meta:
         model = Post
         fields = ['content', 'owner', 'created_at']
 
 class UserSerializer(serializers.ModelSerializer):
-    post_set = PostSerializer(many=True, read_only=True)
-    
+    posts = PostSerializer(many=True, read_only=True)
+
     class Meta:
         model = User
-        fields = ['username', 'post_set']
+        fields = ['id', 'username', 'posts']

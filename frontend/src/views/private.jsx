@@ -6,7 +6,7 @@ const Private = () => {
     const username = useAuthStore((state) => state.user().username);
     const [posRes, setPostRes] = useState('');
     const [posts, setPosts] = useState('');
-    console.log(posts)
+    const inputPlaceholder = `What's on your mind, ${username}?`
     const api = useAxios();
     useEffect(() => {
         const fetchData = async () => {
@@ -23,19 +23,22 @@ const Private = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('/test/', {
-                text: e.target[0].value,
+            const response = await api.post('/posts/', {
+                content: e.target[0].value,
             });
-            setPostRes(response.data.response);
+            console.log('response is')
+            console.log(response)
         } catch (error) {
+            console.log('response is')
+            console.log(error.response.data)
             setPostRes(error.response.data);
         }
     };
     return (
         <section>
-            <h2>What's on your mind, {username}?</h2>
+            <h1>Phil Social</h1>
             <form method="POST" onSubmit={handleSubmit}>
-                <input type="text" size="50" placeholder="Enter Text" />
+                <input type="text" size="50" placeholder={inputPlaceholder} maxlength="140" />
                 <button type="submit">Submit</button>
             </form>
             <h2>Most recent posts from our users</h2>
