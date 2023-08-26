@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/auth';
-
+import PostList from '../components/PostList'
 const Home = () => {
     const [isLoggedIn, user] = useAuthStore((state) => [
         state.isLoggedIn,
@@ -37,6 +37,7 @@ export const LoggedOutView = ({ title = 'Home' }) => {
             <Link to="/register">
                 <button>Register</button>
             </Link>
+            <PostList/>
         </div>
     );
 };
