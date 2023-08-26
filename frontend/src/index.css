@@ -67,3 +67,30 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.social-media-post {
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin: 16px;
+  background-color: rgba(255, 255, 255, 0.87);
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.timestamp {
+  color: #666;
+}
+
+.post-content {
+  font-size: 14px;
+  color: #1a1a1a;
+}

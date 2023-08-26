@@ -57,7 +57,7 @@ def testEndPoint(request):
 
 # @permission_classes([IsAuthenticated])
 class PostList(generics.ListCreateAPIView):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
 
     def perform_create(self, serializer):

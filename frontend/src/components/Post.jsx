@@ -1,18 +1,15 @@
-import { useEffect, useState } from 'react';
-import { setUser } from '../utils/auth';
+const Post = ({owner, created_at, content}) => {
+    const datetime = new Date(created_at)
+    
+    return (
+    <div className="social-media-post">
+        <div className="post-header">
+            <a className="username" href={`users/${owner}`}>@{owner}</a>
+            <div className="timestamp">{datetime.toUTCString()}</div>
+        </div>
+        <div className="post-content">{content}</div>
+    </div>
+    );
+}
 
-const MainWrapper = ({ children }) => {
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        const handler = async () => {
-            setLoading(true);
-            await setUser();
-            setLoading(false);
-        };
-        handler();
-    }, []);
-
-    return <>{loading ? null : children}</>;
-};
-
-export default MainWrapper;
+export default Post;

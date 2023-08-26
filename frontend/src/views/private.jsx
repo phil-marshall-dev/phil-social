@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
 import useAxios from '../utils/useAxios';
 import { useAuthStore } from '../store/auth';
+import Post from '../components/Post';
 
 const Private = () => {
     const username = useAuthStore((state) => state.user().username);
-    const [posRes, setPostRes] = useState('');
-    const [posts, setPosts] = useState('');
+    const [posts, setPosts] = useState([]);
     const inputPlaceholder = `What's on your mind, ${username}?`
     const api = useAxios();
+    const fetchPosts = async () => {
+        try {
+            const response = await api.get('/posts/');
+            setPosts(response.data);
+        } catch (error) {
+            setPosts(error.response.data);
+        }
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await api.get('/posts/');
-                setPosts(response.data);
-            } catch (error) {
-                setPosts(error.response.data);
-            }
-        };
-        fetchData();
+        fetchPosts();
     }, [])
 
     const handleSubmit = async (e) => {
@@ -26,14 +26,22 @@ const Private = () => {
             const response = await api.post('/posts/', {
                 content: e.target[0].value,
             });
-            console.log('response is')
-            console.log(response)
+            fetchPosts()
         } catch (error) {
-            console.log('response is')
-            console.log(error.response.data)
-            setPostRes(error.response.data);
         }
     };
+
+    const postsJsx = posts.map(post => {
+        return (
+            <Post
+                content={post.content}
+                owner={post.owner}
+                created_at={post.created_at}
+            >
+
+            </Post>
+        )
+    })
     return (
         <section>
             <h1>Phil Social</h1>
@@ -42,7 +50,7 @@ const Private = () => {
                 <button type="submit">Submit</button>
             </form>
             <h2>Most recent posts from our users</h2>
-            {posRes && <p>{posRes}</p>}
+            {postsJsx}
         </section>
     );
 };
