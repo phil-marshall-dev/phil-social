@@ -9,6 +9,7 @@ from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.pagination import CursorPagination
 import json
 from .models import Post
 # Create your views here.
@@ -55,9 +56,14 @@ def testEndPoint(request):
             return Response("Invalid JSON data", status.HTTP_400_BAD_REQUEST)
     return Response("Invalid JSON data", status.HTTP_400_BAD_REQUEST)
 
+class MyPaginationClass(CursorPagination):
+    page_size = 10
+    ordering = '-created_at'
+
 # @permission_classes([IsAuthenticated])
 class PostList(generics.ListCreateAPIView):
     serializer_class = PostSerializer
+    pagination_class = MyPaginationClass
 
     def get_queryset(self):
         queryset = Post.objects.all().order_by('-created_at')

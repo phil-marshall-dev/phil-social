@@ -3,9 +3,11 @@ import Post from '../components/Post';
 import { usePostStore } from '../store/post';
 
 const PostList = () => {
+    const getNextPosts = usePostStore((state) => state.getNextPosts)
     const posts = usePostStore((state) => state.posts)
     const setPosts = usePostStore((state) => state.setPosts)
     const userName = usePostStore((state) => state.userName)
+    const postsLoading = usePostStore((state) => state.postsLoading)
     useEffect(() => {
         setPosts()
       }, [userName]);
@@ -26,9 +28,13 @@ const PostList = () => {
         )
     })
     return (
+        <>
         <div>
-            {postsJsx}
+            {!postsLoading && 
+            postsJsx}
         </div>
+        <button onClick={getNextPosts}>Load more posts</button>
+        </>
     );
 };
 

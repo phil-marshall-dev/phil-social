@@ -8,22 +8,40 @@ const api = useUnauthenticatedAxios();
 const usePostStore = create((set, get) => ({
     posts: [],
     userName: null,
+    postsLoading: false,
+    nextLink: null,
     setUserName: (userName) => {
         set({ userName: userName })
     },
+    clearPosts: () => set({posts: []}),
+    getNextPosts: async () => {
+        try {
+            const nextLink = get().nextLink;
+            if (nextLink) {
+                const response = await api.get(nextLink);
+                set((state) => {
+                    return {posts: state.posts.concat(response.data.results)}
+                });
+                set({nextLink: response.data.next})
+                set({ postsLoading: false })
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
     setPosts: async () => {
-        console.log('setting posts')
+        set({ postsLoading: true })
         try {
             if (!get().userName) {
                 const response = await api.get('/posts/');
-                set({posts: response.data});
+                set({posts: response.data.results});
+                set({nextLink: response.data.next})
             } else {
                 const response = await api.get(`/posts?username=${get().userName}`);
-                console.log(
-                    `/posts?username=${get().userName}/`
-                )
-                set({posts: response.data});            
+                set({posts: response.data.results});
+                set({nextLink: response.data.next})      
             }
+            set({ postsLoading: false })
         } catch (error) {
             console.log(error);
         }

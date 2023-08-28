@@ -4,7 +4,7 @@ import {  useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const UserPage = () => {
-    const [setUserName, setPosts] = usePostStore(state => [state.setUserName, state.setPosts])
+    const setUserName = usePostStore(state => state.setUserName)
     const {userName} = useParams()
 
     useEffect(() => {
