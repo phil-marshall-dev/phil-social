@@ -1,20 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useUnauthenticatedAxios } from '../utils/useAxios';
 import Post from '../components/Post';
+import { usePostStore } from '../store/post';
 
 const PostList = () => {
-    const [posts, setPosts] = useState([]);
+    const posts = usePostStore((state) => state.posts)
+    const setPosts = usePostStore((state) => state.setPosts)
     const api = useUnauthenticatedAxios();
-    const fetchPosts = async () => {
-        try {
-            const response = await api.get('/posts/');
-            setPosts(response.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
     useEffect(() => {
-        fetchPosts()
+        setPosts()
       }, []);
     // useEffect(() => {
     //     const interval = setInterval(() => fetchPosts(), 1000);
