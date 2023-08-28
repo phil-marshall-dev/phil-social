@@ -34,10 +34,9 @@ function Register() {
     };
 
     return (
-        <section>
+        <div>
             <form onSubmit={handleSubmit}>
                 <h1>Register</h1>
-                <hr />
                 <div>
                     <label htmlFor="username">Username</label>
                     <input
@@ -73,7 +72,7 @@ function Register() {
                 </div>
                 <button type="submit">Register</button>
             </form>
-        </section>
+        </div>
     );
 }
 

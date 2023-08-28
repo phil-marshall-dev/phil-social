@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import useAxios from '../utils/useAxios';
+import { useUnauthenticatedAxios } from '../utils/useAxios';
 import Post from '../components/Post';
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
-    const api = useAxios();
+    const api = useUnauthenticatedAxios();
     const fetchPosts = async () => {
         try {
             const response = await api.get('/posts/');
@@ -16,12 +16,12 @@ const PostList = () => {
     useEffect(() => {
         fetchPosts()
       }, []);
-    useEffect(() => {
-        const interval = setInterval(() => fetchPosts(), 1000);
-        return () => {
-          clearInterval(interval);
-        };
-      }, []);
+    // useEffect(() => {
+    //     const interval = setInterval(() => fetchPosts(), 1000);
+    //     return () => {
+    //       clearInterval(interval);
+    //     };
+    //   }, []);
 
     const postsJsx = posts.map(post => {
         return (
