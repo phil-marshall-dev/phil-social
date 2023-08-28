@@ -5,15 +5,16 @@ import { usePostStore } from '../store/post';
 const PostList = () => {
     const posts = usePostStore((state) => state.posts)
     const setPosts = usePostStore((state) => state.setPosts)
+    const userName = usePostStore((state) => state.userName)
     useEffect(() => {
         setPosts()
-      }, []);
-    useEffect(() => {
-        const interval = setInterval(() => fetchPosts(), 5000);
-        return () => {
-          clearInterval(interval);
-        };
-      }, []);
+      }, [userName]);
+    // useEffect(() => {
+    //     const interval = setInterval(() => setPosts(), 5000);
+    //     return () => {
+    //       clearInterval(interval);
+    //     };
+    //   }, []);
 
     const postsJsx = posts.map(post => {
         return (

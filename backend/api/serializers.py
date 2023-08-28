@@ -56,6 +56,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     posts = PostSerializer(many=True, read_only=True)
+    lookup_field = 'username'
 
     class Meta:
         model = User

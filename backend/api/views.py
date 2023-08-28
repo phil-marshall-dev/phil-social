@@ -57,8 +57,14 @@ def testEndPoint(request):
 
 # @permission_classes([IsAuthenticated])
 class PostList(generics.ListCreateAPIView):
-    queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
+
+    def get_queryset(self):
+        queryset = Post.objects.all().order_by('-created_at')
+        username = self.request.query_params.get('username')
+        if username is not None:
+            queryset = queryset.filter(owner__username=username)
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -78,3 +84,4 @@ class UserList(generics.ListCreateAPIView):
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    lookup_field = 'username'

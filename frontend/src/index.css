@@ -88,6 +88,8 @@ button:focus-visible {
 
 .username {
   font-weight: bold;
+  text-decoration: underline;
+
 }
 
 .timestamp {
