@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/auth';
-import PostList from '../components/PostList';
+import { usePostStore } from '../store/post';
 import { useAxios } from '../utils/useAxios';
 const Home = () => {
     const [isLoggedIn, user] = useAuthStore((state) => [
@@ -16,6 +16,7 @@ const Home = () => {
 
 const LoggedInView = () => {
     const api = useAxios();
+    const setPosts = usePostStore((state) => state.setPosts)
     const username = useAuthStore((state) => state.user().username);
     const text = `What's on your mind, ${username}?`
     const handleSubmit = async (e) => {
@@ -24,6 +25,7 @@ const LoggedInView = () => {
             const response = await api.post('/posts/', {
                 content: e.target[0].value,
             });
+            setPosts();
         } catch (error) {
         }
     };
