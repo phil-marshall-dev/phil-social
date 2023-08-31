@@ -5,6 +5,13 @@ import { useUnauthenticatedAxios } from '../utils/useAxios';
 
 const api = useUnauthenticatedAxios();
 
+// django returns next links with http, not https, so we
+// need to strip the path out to avoid mixing content
+const parsePath = (url) => {
+    const urlObj = new URL(url)
+    return urlObj.pathname + urlObj.search
+}
+
 const usePostStore = create((set, get) => ({
     posts: [],
     userName: null,
@@ -22,7 +29,10 @@ const usePostStore = create((set, get) => ({
                 set((state) => {
                     return {posts: state.posts.concat(response.data.results)}
                 });
-                set({nextLink: response.data.next})
+                set({
+
+                    nextLink: parsePath(response.data.next)
+                })
                 set({ postsLoading: false })
             }
         } catch (error) {
@@ -33,13 +43,13 @@ const usePostStore = create((set, get) => ({
         set({ postsLoading: true })
         try {
             if (!get().userName) {
-                const response = await api.get('/posts/');
+                const response = await api.get('/api/posts/');
                 set({posts: response.data.results});
-                set({nextLink: response.data.next})
+                set({nextLink: parsePath(response.data.next)})
             } else {
-                const response = await api.get(`/posts?username=${get().userName}`);
+                const response = await api.get(`/api/posts?username=${get().userName}`);
                 set({posts: response.data.results});
-                set({nextLink: response.data.next})      
+                set({nextLink: parsePath(response.data.next)})
             }
             set({ postsLoading: false })
         } catch (error) {

@@ -25,6 +25,7 @@ const LoggedInView = () => {
             const response = await api.post('/posts/', {
                 content: e.target[0].value,
             });
+            e.target[0].value = '';
             setPosts();
         } catch (error) {
         }

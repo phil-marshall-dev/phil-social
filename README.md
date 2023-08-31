@@ -1,4 +1,4 @@
-# Django Rest Auth with React Vite - 2023
+# Phil Social
 
 ## Steps for Running Project
 
