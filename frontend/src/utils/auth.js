@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 
 export const login = async (username, password) => {
     try {
-        const { data, status } = await axios.post('token/', {
+        const { data, status } = await axios.post('api/token/', {
             username,
             password,
         });
@@ -23,7 +23,7 @@ export const login = async (username, password) => {
 
 export const register = async (username, password, password2) => {
     try {
-        const { data } = await axios.post('register/', {
+        const { data } = await axios.post('api/register/', {
             username,
             password,
             password2,
@@ -80,7 +80,7 @@ export const setAuthUser = (access_token, refresh_token) => {
 
 export const getRefreshToken = async () => {
     const refresh_token = Cookies.get('refresh_token');
-    const response = await axios.post('token/refresh/', {
+    const response = await axios.post('api/token/refresh/', {
         refresh: refresh_token,
     });
     return response.data;

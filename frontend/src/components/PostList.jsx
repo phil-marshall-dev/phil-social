@@ -27,8 +27,10 @@ const PostList = () => {
             />
         )
     })
+    const headerText = userName ? `Most recent posts from ${userName}` : 'Most recent posts from our users'
     return (
         <>
+        <h2>{headerText}</h2>
         <div>
             {!postsLoading && 
             postsJsx}

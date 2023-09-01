@@ -18,7 +18,6 @@ const UserPage = () => {
     return (
         <div>
             <h1>Phil Social</h1>
-            <h2>Posts from {userName}</h2>
             <Link to="/">
                 <button>Home</button>
             </Link>
